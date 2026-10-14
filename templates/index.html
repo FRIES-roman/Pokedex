@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="bg-white p-4 p-md-5 rounded-3 border shadow-sm text-center">
+    <h1 class="display-4 fw-bold text-dark mb-3">Vítejte v PokéApp</h1>
+    <p class="lead text-muted col-lg-8 mx-auto mb-4">
+        Váš kompletní průvodce světem Pokémonů, jejich statistik, typů a schopností.
+    </p>
+    <a href="{{ url_for('katalog') }}" class="btn btn-danger btn-lg px-4 me-2">Prohlížet Katalog</a>
+    <a href="{{ url_for('about') }}" class="btn btn-outline-dark btn-lg px-4">O aplikaci</a>
+</div>
+{% endblock %}

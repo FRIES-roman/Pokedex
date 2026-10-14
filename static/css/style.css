@@ -1,0 +1,8 @@
+/* Plynulý posun při klikání na odkazy */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #f8f9fa;
+}
