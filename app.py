@@ -47,6 +47,11 @@ def typy():
 def about():
     return render_template("about.html")
 
+# 5. Login
+@app.route("/login")
+def login():
+    return render_template("auth/login.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
