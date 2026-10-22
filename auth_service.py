@@ -7,3 +7,8 @@ class AuthService:
                 return uzivatele
 
             return None
+
+        def prihlas(self, email,heslo):
+            uzivatele = self.najdi_uzivatele(email)
+            if uzivatele is None:
+                return None
