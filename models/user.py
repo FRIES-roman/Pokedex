@@ -8,10 +8,17 @@ class User;
         self.role = role;
         self.__aktivni = True
     def cele_jmeno(self):
-        return f"{self.jmeno}  {self.prijmeni
+        return f"{self.jmeno}  {self.prijmeni}
+
     def je_admin (self):
         return self.role == "admin"
+
     def je_aktivni (self):
         return self.__aktivni
+
     def deaktivovat (self):
         return self.__aktivni = False
+
+    def over_heslo (self, heslo):
+        self.password = heslo
+        return self.password == heslo
