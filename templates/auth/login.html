@@ -6,20 +6,29 @@
         <div class="card shadow-sm border-0">
             <div class="card-body p-5">
                 <h2 class="text-center mb-4 fw-bold">Přihlášení</h2>
-                <form>
+                <form method="POST" action="{{ url_for('auth.login') }}">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Uživatelské jméno</label>
-                        <input type="text" class="form-control" id="username" placeholder="Zadejte jméno">
+                        <label for="username" class="form-label">Uživatelské jméno / Email</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Zadejte jméno" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Heslo</label>
-                        <input type="password" class="form-control" id="password" placeholder="Zadejte heslo">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Zadejte heslo" required>
                     </div>
                     <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-dark btn-lg" disabled>Přihlásit se</button>
+                        <button type="submit" class="btn btn-dark btn-lg">Přihlásit se</button>
                     </div>
-
                 </form>
+
+                <div class="text-center border-top mt-4 pt-3">
+                    <p class="small text-muted mb-0">
+                        {% if chyba %}
+                            <span class="text-danger fw-bold">{{ chyba }}</span>
+                        {% else %}
+                            Tvůj daný pokemon už čeká
+                        {% endif %}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
