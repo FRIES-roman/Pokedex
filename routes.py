@@ -19,9 +19,18 @@ def login():
         if uzivatel is not None:
             session.clear()
             session["uzivatel_id"] = uzivatel.id
-            # Po úspěšném přihlášení přesměrujeme na hlavní stránku -> hláška zmizí
-            return redirect(url_for("index"))
+            session["uzivatel_jmeno"] = uzivatel.jmeno
+            session["uzivatel_prijmeni"] = uzivatel.prijmeni
+            session["uzivatel_role"] = uzivatel.role
+
+
+         return redirect(url_for("index"))
 
         chyba = "Nesprávný email nebo heslo"
 
     return render_template('login.html', chyba=chyba)
+
+@auth_bp.route('/profil')
+def profil():
+    if session.get("uzivatel_id") is None:
+        return redirect(url_for('login'))
