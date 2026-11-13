@@ -20,9 +20,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('about') }}">O aplikaci</a>
                 </li>
+                {% if session.get("uzivatel_id"} is not none %}
                 <li class="nav-item">
                     <a class="btn btn-outline-light ms-lg-2" href="{{ url_for('login') }}">Přihlásit se</a>
+                    </a>
                 </li>
+                 Profil
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-light ms-lg-2" href="{{ url_for('login') }}">Přihlásit se</a>
+                    </a>
+                </li>
+                Přihlasit se
             </ul>
         </div>
     </div>

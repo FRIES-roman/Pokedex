@@ -8,7 +8,7 @@ auth = AuthService(uzivatele)
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     chyba = None
-
+    session.clear()
     if request.method == 'POST':
         # V HTML šabloně musí být atribut name="username"
         username = request.form.get("username")
@@ -33,4 +33,5 @@ def login():
 @auth_bp.route('/profil')
 def profil():
     if session.get("uzivatel_id") is None:
-        return redirect(url_for('login'))
+        return redirect(auth.login))
+    return render_template('auth/profil.html')
