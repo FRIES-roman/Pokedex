@@ -36,3 +36,7 @@ def profil():
         return redirect(auth.login))
     return render_template('auth/profil.html')
 
+@auth_bp.route('/logout')
+def logout():
+    session.clear()
+
