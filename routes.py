@@ -35,3 +35,4 @@ def profil():
     if session.get("uzivatel_id") is None:
         return redirect(auth.login))
     return render_template('auth/profil.html')
+

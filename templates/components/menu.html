@@ -7,7 +7,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto gap-2">
+            <ul class="navbar-nav ms-auto gap-2 align-items-lg-center">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('home') }}">Domů</a>
                 </li>
@@ -20,18 +20,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('about') }}">O aplikaci</a>
                 </li>
-                {% if session.get("uzivatel_id"} is not none %}
+
+                {% if session.get("uzivatel_id") is not none %}
                 <li class="nav-item">
-                    <a class="btn btn-outline-light ms-lg-2" href="{{ url_for('login') }}">Přihlásit se</a>
-                    </a>
+                    <a class="nav-link text-warning fw-bold" href="{{ url_for('klub') }}">Profil / Klub</a>
                 </li>
-                 Profil
+                <li class="nav-item">
+                    <a class="btn btn-outline-danger btn-sm ms-lg-2" href="{{ url_for('logout') }}">Odhlásit se</a>
+                </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="btn btn-outline-light ms-lg-2" href="{{ url_for('login') }}">Přihlásit se</a>
-                    </a>
                 </li>
-                Přihlasit se
+                {% endif %}
             </ul>
         </div>
     </div>
