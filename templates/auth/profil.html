@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <!-- Profil přihlášeného uživatele -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <h2 class="fw-bold mb-3">Můj profil</h2>
+                <p class="mb-1"><strong>Jméno:</strong> {{ uzivatel.cele_jmeno() }}</p>
+                <p class="mb-1"><strong>Přezdívka:</strong> {{ uzivatel.nickname }}</p>
+                <p class="mb-1"><strong>E-mail:</strong> {{ uzivatel.email }}</p>
+                <p class="mb-0"><strong>Role:</strong> {{ uzivatel.role }}</p>
+            </div>
+        </div>
+
+        <!-- Seznam účtů - pouze pro admina -->
+        {% if vsechny_ucty %}
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h3 class="fw-bold mb-3">Správa uživatelských účtů</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Jméno</th>
+                                <th>Přezdívka</th>
+                                <th>E-mail</th>
+                                <th>Role</th>
+                                <th>Stav</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ucet in vsechny_ucty %}
+                            <tr>
+                                <td>{{ ucet.id }}</td>
+                                <td>{{ ucet.cele_jmeno() }}</td>
+                                <td>{{ ucet.nickname }}</td>
+                                <td>{{ ucet.email }}</td>
+                                <td>{{ ucet.role }}</td>
+                                <td>
+                                    {% if ucet.je_aktivni() %}
+                                    <span class="badge bg-success">Aktivní</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Neaktivní</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
