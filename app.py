@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
 from data_uzivatele import uzivatele
 
 app = Flask(__name__)
 app.secret_key = "super_tajny_klic"
 
-# Testovací data pro Katalog a Typy
 POKEMON_DATA = [
     {
         "id": 25,
@@ -17,7 +16,7 @@ POKEMON_DATA = [
         "id": 137,
         "name": "Porygon",
         "type": "Normal / Tech",
-        "description": "Zcela syntetický Pokémon vytvořený z programového kódu.",
+        "description": "Zcela syntetický Pokémon vytvoýený z programového kódu.",
         "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/137.png"
     },
     {
@@ -29,34 +28,38 @@ POKEMON_DATA = [
     }
 ]
 
+
 # 1. Domů
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 # 2. Katalog
 @app.route("/katalog")
 def katalog():
     return render_template("katalog.html", pokemons=POKEMON_DATA)
 
+
 # 3. Typy
 @app.route("/typy")
 def typy():
     return render_template("typy.html")
+
 
 # 4. O aplikaci
 @app.route("/o-aplikaci")
 def about():
     return render_template("about.html")
 
-# 5. Login
+
+# 5. Přihlášení
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
 
-        # Hledání uživatele (funguje pro přezdívku i e-mail)
         user = next(
             (u for u in uzivatele if (u.nickname == username or u.email == username) and u.heslo == password),
             None
@@ -65,6 +68,7 @@ def login():
         if user:
             session["user_id"] = user.id
             session["user_name"] = user.cele_jmeno()
+            session["user_role"] = user.role
             flash(f"Vítejte zpět, {user.nickname}!", "success")
             return redirect(url_for("profil"))
         else:
@@ -72,7 +76,8 @@ def login():
 
     return render_template("auth/login.html")
 
-# 6. Profil a správa účtů pro admina
+
+# 6. Profil uživatele
 @app.route("/profil")
 def profil():
     user_id = session.get("user_id")
@@ -85,12 +90,22 @@ def profil():
         session.clear()
         return redirect(url_for("login"))
 
-    # Pokud je uživatel admin, pošleme do šablony všechny účty, jinak prázdný seznam
-    vsechny_ucty = uzivatele if aktualni_uzivatel.role == "admin" else []
+    return render_template("auth/profil.html", uzivatel=aktualni_uzivatel)
 
-    return render_template("auth/profil.html", uzivatel=aktualni_uzivatel, vsechny_ucty=vsechny_ucty)
 
-# 7. Logout
+# 7. Administrace – seznam uživatelských účtů (jen pro admina, jinak chyba 403)
+@app.route("/admin")
+def admin():
+    if session.get("user_id") is None:
+        return redirect(url_for("login"))
+
+    if session.get("user_role") != "admin":
+        abort(403)
+
+    return render_template("admin.html", uzivatele=uzivatele)
+
+
+# 8. Odhlášení
 @app.route("/logout")
 def logout():
     session.clear()
