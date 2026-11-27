@@ -1,3 +1,6 @@
+from werkzeug.security import check_password_hash
+
+
 class User:
     def __init__(self, id, jmeno, prijmeni, email, nickname, heslo, role="uzivatel"):
         self.id = id
@@ -14,6 +17,9 @@ class User:
 
     def je_admin(self):
         return self.role == "admin"
+
+    def over_heslo(self, heslo):
+        return check_password_hash(self.heslo, heslo)
 
     def je_aktivni(self):
         return self.__aktivni

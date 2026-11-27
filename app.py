@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from data_uzivatele import uzivatele
 
 app = Flask(__name__)
@@ -61,11 +61,11 @@ def login():
         password = request.form.get("password")
 
         user = next(
-            (u for u in uzivatele if (u.nickname == username or u.email == username) and u.heslo == password),
+            (u for u in uzivatele if u.nickname == username or u.email == username),
             None
         )
 
-        if user:
+        if user and user.over_heslo(password):
             session["user_id"] = user.id
             session["user_name"] = user.cele_jmeno()
             session["user_role"] = user.role
@@ -93,14 +93,14 @@ def profil():
     return render_template("auth/profil.html", uzivatel=aktualni_uzivatel)
 
 
-# 7. Administrace – seznam uživatelských účtů (jen pro admina, jinak chyba 403)
+# 7. Administrace – seznam uživatelských účtů (jen pro admina, ostatní na index)
 @app.route("/admin")
 def admin():
-    if session.get("user_id") is None:
-        return redirect(url_for("login"))
+    user_id = session.get("user_id")
+    aktualni_uzivatel = next((u for u in uzivatele if u.id == user_id), None) if user_id else None
 
-    if session.get("user_role") != "admin":
-        abort(403)
+    if not aktualni_uzivatel or not aktualni_uzivatel.je_admin():
+        return redirect(url_for("home"))
 
     return render_template("admin.html", uzivatele=uzivatele)
 

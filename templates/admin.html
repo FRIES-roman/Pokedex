@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 class="fw-bold mb-3">Správa uživatelských účtů</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Jméno</th>
+                                <th>Přezdívka</th>
+                                <th>E-mail</th>
+                                <th>Role</th>
+                                <th>Stav</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ucet in uzivatele %}
+                            <tr>
+                                <td>{{ ucet.id }}</td>
+                                <td>{{ ucet.cele_jmeno() }}</td>
+                                <td>{{ ucet.nickname }}</td>
+                                <td>{{ ucet.email }}</td>
+                                <td>{{ ucet.role }}</td>
+                                <td>
+                                    {% if ucet.je_aktivni() %}
+                                    <span class="badge bg-success">Aktivní</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Neaktivní</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
