@@ -1,3 +1,6 @@
+from werkzeug.security import check_password_hash
+
+
 class AuthService:
     def __init__(self, uzivatele):
         self.uzivatele = uzivatele
@@ -24,3 +27,6 @@ class AuthService:
             if uzivatel.id == user_id:
                 return uzivatel
         return None
+
+    def over_heslo(self, heslo):
+            return check_password_hash(self.password, heslo)
